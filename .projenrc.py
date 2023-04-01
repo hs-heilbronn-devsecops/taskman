@@ -15,6 +15,9 @@ project = PythonProject(
 
 project.add_git_ignore('.idea')
 
+
+
+
 dev_task = project.add_task('dev')
 dev_task.exec('uvicorn taskman.main:app --reload')
 
