@@ -18,6 +18,10 @@ class Task(TaskRequest):
 
 tasks: Dict[str, Task] = {}
 
+@app.get('/')
+def home():
+    return {"message":"home"}
+  
 
 @app.get('/tasks')
 def get_tasks() -> List[Task]:
