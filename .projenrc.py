@@ -10,7 +10,7 @@ project = PythonProject(
         'fastapi',
         'uvicorn[standard]'
     ],
-    github=False
+    github = False
     
 )
 
