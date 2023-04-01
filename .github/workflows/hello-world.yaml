@@ -1,0 +1,13 @@
+name: Hello World
+
+on:
+  pull_request:
+    types: [opened]
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello World
+        run: echo "Hello World!"
