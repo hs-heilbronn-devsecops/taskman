@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Hello World Redian
-        run: echo ¨Hello WorldRedian¨
+        run: echo ¨Heello WorldRedian¨
