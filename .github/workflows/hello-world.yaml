@@ -9,5 +9,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Hello World
-        run: pylint taskman
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Run pylint
+        run: pylint taskman && pip intasll pylint
