@@ -3,6 +3,7 @@ from typing import Dict, List
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
@@ -19,8 +20,17 @@ class Task(TaskRequest):
 tasks: Dict[str, Task] = {}
 
 @app.get('/')
-def home():
-    return {"message":"home"}
+def home(response_class=HTMLResponse):
+    html_content = """ <html>
+        <head>
+            <title>Some HTML in here</title>
+        </head>
+        <body>
+            <h1>hs-heilbronn-devsecops-tigers</h1>
+        </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content, status_code=200)
   
 
 @app.get('/tasks')
