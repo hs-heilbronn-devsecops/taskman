@@ -10,4 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Redian Install pylint
-        run: pip install pylint && pylint taskman
+        run: pip install pylint
+            pylint taskman
