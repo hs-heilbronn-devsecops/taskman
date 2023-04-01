@@ -1,3 +1,5 @@
+
+
 name: Hello World
 
 on:
@@ -9,5 +11,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Run pylint
-      run: pip install pylint && pylint taskman
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: set up Python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Run pylint
+        run: pip install pylint && pylint taskman
