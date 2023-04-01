@@ -6,9 +6,9 @@ on:
   push:
 
 jobs:
-build:
-runs-op: ubuntu-latest
-steps:
-- name: Print Hello World 
-run: echo "Hello World!"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello World
+        run: echo "Hello World!"
 
