@@ -9,5 +9,5 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Hello World!
-        run: pylint taskman
+      - name: Run pylint
+        run: pip install pylint && pylint taskman
