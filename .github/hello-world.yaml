@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Run pylint
+      - name: Install Pylint
         run: pip install pylint
-             pylint taskman
-
+      - name: Run pylint
+        run: pylint taskman     
