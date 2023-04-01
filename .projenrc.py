@@ -10,6 +10,7 @@ project = PythonProject(
         'fastapi',
         'uvicorn[standard]'
     ]
+     github=false
 )
 
 project.add_git_ignore('.idea')
