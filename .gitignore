@@ -4,7 +4,6 @@ node_modules/
 !/.projen/tasks.json
 !/.projen/deps.json
 !/.projen/files.json
-!/.github/workflows/pull-request-lint.yml
 /.env
 !/requirements.txt
 !/requirements-dev.txt
