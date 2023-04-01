@@ -11,5 +11,4 @@ jobs:
     steps:
       - name: Redian Install pylint
         run: pip install pylint
-      - name: Print Hello World Redian
-        run: pylint taskman
+            pylint taskman
