@@ -1,13 +1,13 @@
 name: Hello World Redian
 
-on:
+on: 
   pull_request:
-    types:[opened]
+    types: [opened]
   push:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Hello World Redian 
-        run: echo "Hello Worlddddddddd Redian"
+      - name: Print Hello World Redian
+        run: echo ¨Hello WorldRedian¨
