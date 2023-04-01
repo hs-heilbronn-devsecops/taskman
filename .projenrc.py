@@ -11,6 +11,7 @@ project = PythonProject(
         'uvicorn[standard]'
     ],
     github=False
+    
 )
 
 project.add_git_ignore('.idea')
