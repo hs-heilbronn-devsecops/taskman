@@ -1,4 +1,4 @@
-name: Hello World
+name: Hello World Redian
 
 on:
   pull_request:
@@ -9,5 +9,5 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Hello World 
-        run: echo "Hello Worlddddddddd"
+      - name: Print Hello World Redian 
+        run: echo "Hello Worlddddddddd Redian"
