@@ -23,3 +23,12 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run pylint
         run: pylint taskman
+      # - name: Run auto tests
+      #   run: |
+      #    pytest -n auto
+
+
+
+
+
+
