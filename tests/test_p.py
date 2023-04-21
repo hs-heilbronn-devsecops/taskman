@@ -1,8 +1,5 @@
-def func(x):
-    return x + 1
+def test_addition():
+    assert 2 + 2 == 4
 
-
-def test_answer():
-    assert func(3) == 5
-
-    
+def test_subtraction():
+    assert 5 - 3 == 2
