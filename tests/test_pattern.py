@@ -1,11 +1,10 @@
 # test_example.py
 
-def test_functionality_1():
-    assert True
+def test_feature_a():
+    assert 2 * 2 == 4
 
-def test_functionality_2():
-    assert False
+def test_feature_b():
+    assert "Hello, world!"[0:5] == "Hello"
 
-def test_functionality_3():
-    assert 1 + 1 == 2
-   
+def test_feature_c():
+    assert len([1, 2, 3, 4, 5]) == 5
