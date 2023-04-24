@@ -28,5 +28,9 @@ jobs:
         run: pip install pytest
       - name: Install pytest-parallel
         run: pip install pytest-xdist
+      - name: Install coverage
+        run: pip install pytest-cov
       - name: Run pytest
         run: pytest -n=2 --dist=loadscope
+      - name: Show coverage
+        run: pytest --cov=taskman tests/
