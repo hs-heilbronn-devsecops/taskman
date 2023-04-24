@@ -23,4 +23,4 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run tests in parallel with pytest-xdist
         run: |
-          pytest -n 2 test_plus.py test_p.py test_pattern.py
+          pytest -n 2 test_plus.py test_p.py test_pattern.py 
