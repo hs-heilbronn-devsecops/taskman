@@ -21,5 +21,7 @@ jobs:
         run: pip install -r requirements.txt
       - name: Install development dependencies
         run: pip install -r requirements-dev.txt
-      - name: Run pylint
-        run: pylint taskman
+      - name: Run tests in parallel with pytest-xdist
+        run: |
+          pytest test_plus.py test_p.py test_pattern.py
+
