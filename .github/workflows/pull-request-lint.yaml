@@ -24,3 +24,4 @@ jobs:
       - name: Run tests in parallel with pytest-xdist
         run: |
           pytest -n 2 test_plus.py test_p.py test_pattern.py
+
