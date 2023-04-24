@@ -30,7 +30,5 @@ jobs:
         run: pip install pytest-xdist
       - name: Install coverage
         run: pip install pytest-cov
-      - name: Run pytest
-        run: pytest -n=2 --dist=loadscope
-      - name: Show coverage
-        run: pytest --cov=taskman tests/
+      - name: Run pytest and show coverage
+        run: pytest --cov=taskman tests/ -n=2
