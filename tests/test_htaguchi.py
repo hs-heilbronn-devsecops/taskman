@@ -2,7 +2,7 @@ import pytest
 
 from taskman.example import hello
 
-@pytest.mark.parametrize(
+@pytest.mark.parametrize(  
     ("name", "expected"),
     [
         ("A. Musing", "Hello A. Musing!"),
