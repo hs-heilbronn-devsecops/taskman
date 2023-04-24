@@ -29,4 +29,4 @@ jobs:
       - name: Install pytest-parallel
         run: pip install pytest-xdist
       - name: Run pytest
-        run: pytest tests/test_main.py -n 2
+        run: pytest tests/test_main.py
