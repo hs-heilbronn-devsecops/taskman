@@ -26,5 +26,7 @@ jobs:
 
       - name: Install pytest
         run: pip install pytest
+      - name: Install pytest-parallel
+        run: pip install pytest-parallel
       - name: Run pytest
-        run: pytest tests/test_main.py
+        run: pytest tests/test_main.py --workers 2
