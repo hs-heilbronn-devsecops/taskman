@@ -16,9 +16,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Run pylint
-        run: pip install pylint && pylint taskman
       - name: Run unit tests
         run:  pip install -U pytest && pytest
       - name: Run test coverages
         run: pip install pytest-cov && pytest --cov=taskman tests/
+      - name: Run pylint
+        run: pip install pylint && pylint taskman
