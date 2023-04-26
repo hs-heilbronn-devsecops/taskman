@@ -1,4 +1,4 @@
-name: Redians PR
+name: Check with linter on PR1
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Python set up 
+      - name: set up Python 
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
