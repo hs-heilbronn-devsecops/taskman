@@ -25,12 +25,12 @@ def get_tasks() -> List[Task]:
 
 
 @app.get('/tasks/{item_id}')
-def get_tasks(item_id: str) -> Task:
+def get_task(item_id: str) -> Task:
     return tasks[item_id]
 
 
 @app.put('/tasks/{item_id}')
-def update_item(item_id: str, item: TaskRequest) -> None:
+def update_task(item_id: str, item: TaskRequest) -> None:
     tasks[item_id] = Task(
         item_id=item_id,
         name=item.name,
@@ -39,10 +39,14 @@ def update_item(item_id: str, item: TaskRequest) -> None:
 
 
 @app.post('/tasks')
-def create_item(item: TaskRequest):
+def create_task(item: TaskRequest):
     item_id = str(len(tasks) + 1)
     tasks[item_id] = Task(
         item_id=item_id,
         name=item.name,
         description=item.description,
     )
+
+
+def delete_tasks():
+    tasks.clear()
