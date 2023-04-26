@@ -1,4 +1,4 @@
-name: Check with linter on PR
+name: Redians PR
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: set up Python 
+      - name: Python set up 
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
@@ -23,3 +23,7 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run pylint
         run: pylint taskman
+      - name: Run unit tests
+        run: pip install -U pytest && pytest
+      - name: Run test coverages
+        run: pip install pytest-cov && pytest --cov=taskman tests/
