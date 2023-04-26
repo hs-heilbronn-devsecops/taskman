@@ -3,3 +3,4 @@ def test_add():
     assert (2 + 6) == 8
     assert (1 + 5) == 6
     assert (3 + 5) == 8
+    assert (3 + 6) == 9
