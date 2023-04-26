@@ -10,14 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-        name: Debug statement
-        run: echo "Running something"    
+          fetch-depth: 0   
       - name: set up Python 
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
-          
+          python-version: 3.9  
       - name: Install pylint
         run: pip install pylint
       - name: Install dependencies
@@ -26,3 +23,5 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run pylint
         run: pylint taskman
+      - name: Debug statement
+        run: echo "Executed something"   
