@@ -24,4 +24,4 @@ jobs:
       - name: Run pylint
         run: pylint taskman
       - name: Debug statement
-        run: echo "Executed something"   
+        run: echo "Executed something else"   
