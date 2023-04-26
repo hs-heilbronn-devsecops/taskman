@@ -1,3 +1,3 @@
 # Taskman
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/dev-secops-rrjw/taskman)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/dev-secops-rrjw/taskman)
