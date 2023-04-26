@@ -17,5 +17,5 @@ jobs:
         with:
           python-version: 3.9
       - name: install pylint and taskman
-        run: pip install pylint && taskman
+        run: pip install pylint taskman
       
