@@ -18,8 +18,21 @@ jobs:
       - name: Install pylint
         run: pip install pylint
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Install development dependencies
         run: pip install -r requirements-dev.txt
+
+      - name: Install pytest-xdist
+        run: pip install pytest-xdist
+
+      - name: Upgrade pytest
+        run: pip install --upgrade pytest
+
+      - name: Parallel tests
+        run: pytest -n auto
+
       - name: Run pylint
         run: pylint taskman
