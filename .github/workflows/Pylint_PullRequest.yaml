@@ -1,9 +1,8 @@
-name: Hello World
+name: Check with linter on PR
 
 on:
   pull_request:
     types: [opened]
-  push:
 
 jobs:
   build:
@@ -12,12 +11,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: set up Python
+      - name: set up Python 
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: install pylint
-        run: pip install pylint 
+      - name: Install pylint
+        run: pip install pylint
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Install development dependencies
