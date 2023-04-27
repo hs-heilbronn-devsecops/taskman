@@ -46,7 +46,6 @@ def create_task(item: TaskRequest):
         name=item.name,
         description=item.description,
     )
-
-
+    
 def delete_tasks():
     tasks.clear()
