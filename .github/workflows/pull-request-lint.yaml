@@ -1,4 +1,4 @@
-name: Check with linter on PR
+name: Check with linter and pytest on PR
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   job1:
-    name: PyLint
+    name: Build with PyLint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,17 +16,17 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Install pylint
+      - name: Install PyLint
         run: pip install pylint
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Install development dependencies
         run: pip install -r requirements-dev.txt
-      - name: Run pylint
+      - name: Run PyLint
         run: pylint taskman
 
   job2:
-    name: PyTest
+    name: Test with PyTest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -38,9 +38,9 @@ jobs:
           python-version: 3.9
       - name: Install FastAPI
         run: pip install fastapi
-      - name: Install pytest
+      - name: Install PyTest
         run: pip install pytest
       - name: Install coverage
         run: pip install pytest-cov
-      - name: Run pytest and show coverage
+      - name: Run PyTest and show coverage
         run: pytest --cov=taskman tests/

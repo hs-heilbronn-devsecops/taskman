@@ -1,4 +1,4 @@
-from taskman.main import create_task, get_task, get_tasks,TaskRequest, Task, delete_tasks
+from taskman.main import create_task, get_task, get_tasks, TaskRequest, Task, delete_tasks
 
 
 def test_save_and_get_item():
