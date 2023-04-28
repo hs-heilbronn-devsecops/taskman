@@ -50,3 +50,4 @@ def create_task(item: TaskRequest):
 
 def delete_tasks():
     tasks.clear()
+    
