@@ -6,20 +6,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: set up Python 
+
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Install pylint
-        run: pip install pylint
+
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Install development dependencies
         run: pip install -r requirements-dev.txt
+
+      - name: Install pytest-xdist
+        run: pip install pytest-xdist
+
+      - name: Upgrade pytest
+        run: pip install --upgrade pytest
+
+      - name: Parallel testing assignment
+        run: pytest -n auto
+
       - name: Run pylint
         run: pylint taskman
