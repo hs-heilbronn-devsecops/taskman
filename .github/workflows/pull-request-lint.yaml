@@ -23,3 +23,7 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run pylint
         run: pylint taskman
+      - name: Run unit tests
+        run: pip install -U pytest && pytest
+      - name: Run test coverages
+        run: pip install pytest-cov && pytest --cov=taskman tests/
