@@ -1,4 +1,4 @@
-name: Check with linter on PR1
+name: Check with linter on PR by Redian
 
 on:
   pull_request:
