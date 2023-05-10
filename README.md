@@ -1,9 +1,8 @@
 # Taskman
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/hhn-secops-projectgrp-vrock/taskman)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/hhn-secops-projectgrp-vrock/taskman)
 
 # Testing from the command line
-
 ## Create a new task
 
 ```
