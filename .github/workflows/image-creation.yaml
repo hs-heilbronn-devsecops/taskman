@@ -10,5 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build Image
-        run: docker build -t .
+        run: docker build -t taskman/latest .
   
