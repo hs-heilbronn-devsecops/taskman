@@ -46,3 +46,7 @@ jobs:
         run: pytest --cov=taskman tests/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+      - name: Snyk security 
+        uses: snyk/actions/python@main
+        env: 
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
