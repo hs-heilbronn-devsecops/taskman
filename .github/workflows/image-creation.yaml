@@ -1,0 +1,14 @@
+name: Build Docker Image
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  job1:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Image
+        run: docker build -t taskman/latest .
+  
