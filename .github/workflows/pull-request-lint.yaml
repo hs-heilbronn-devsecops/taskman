@@ -51,6 +51,6 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
       - name: Snyk security
-        uses: snyk/actions/python@master --allow-missing
+        uses: snyk test snyk/actions/python@master --allow-missing
         env: 
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
