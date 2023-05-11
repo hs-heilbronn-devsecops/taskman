@@ -38,6 +38,8 @@ jobs:
           python-version: 3.9
       - name: Install FastAPI
         run: pip install fastapi
+      - name: Install contextvars
+        run: pip install contextvars
       - name: Install PyTest
         run: pip install pytest
       - name: Install coverage
