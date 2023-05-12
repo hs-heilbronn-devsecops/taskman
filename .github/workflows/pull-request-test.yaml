@@ -20,3 +20,9 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run pytest
         run: pytest --cov=taskman -n auto
+      - name: Upload coverage to CodeClimate
+        uses: codeclimate/python-test-reporter@v0.7.0
+        env:
+            CC_TEST_REPORTER_ID: 15f7e29a94e1ea6377b524676502a3f75e3b7ca91871244b4d6c5f7660e1105c
+        with:
+            coverage_reports: coverage.xml
