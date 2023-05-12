@@ -24,4 +24,3 @@ jobs:
             CC_TEST_REPORTER_ID: 15f7e29a94e1ea6377b524676502a3f75e3b7ca91871244b4d6c5f7660e1105c
         with:
           coverageCommand: pytest --cov=taskman --cov-report=xml:coverage.xml
-          coverageLocations: ${{github.workspace}}/coverage.xml
