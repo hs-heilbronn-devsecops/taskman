@@ -50,12 +50,3 @@ jobs:
         run: pytest --cov=taskman tests/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
-
-  job3:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
