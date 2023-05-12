@@ -1,12 +1,40 @@
 {
   "dependencies": [
     {
+      "name": "attrs",
+      "type": "devenv"
+    },
+    {
+      "name": "fakeredis[json]",
+      "type": "devenv"
+    },
+    {
       "name": "projen",
       "version": "0.65.37",
       "type": "devenv"
     },
     {
+      "name": "pylint",
+      "type": "devenv"
+    },
+    {
+      "name": "pytest",
+      "type": "devenv"
+    },
+    {
+      "name": "pytest-cov",
+      "type": "devenv"
+    },
+    {
+      "name": "pytest-xdist",
+      "type": "devenv"
+    },
+    {
       "name": "fastapi",
+      "type": "runtime"
+    },
+    {
+      "name": "redis",
       "type": "runtime"
     },
     {

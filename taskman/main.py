@@ -1,10 +1,19 @@
 # -*- coding: utf-8 -*-
-from typing import Dict, List
+from uuid import uuid4
+from typing import List
+from os import getenv
+from typing_extensions import Annotated
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from pydantic import BaseModel
+from starlette.responses import RedirectResponse
+from redis import Redis
 
 app = FastAPI()
+
+
+def redis_client():
+    return Redis(host=getenv('REDIS_HOST', 'localhost'), port=6379, decode_responses=True)
 
 
 class TaskRequest(BaseModel):
@@ -13,36 +22,57 @@ class TaskRequest(BaseModel):
 
 
 class Task(TaskRequest):
-    item_id: int
+    id: str
 
 
-tasks: Dict[str, Task] = {}
+@app.get('/')
+def redirect_to_tasks() -> None:
+    return RedirectResponse(url='/tasks')
 
 
 @app.get('/tasks')
-def get_tasks() -> List[Task]:
-    return list(tasks.values())
+def get_tasks(redis: Annotated[Redis, Depends(redis_client)]) -> List[Task]:
+    keys = redis.keys()
+
+    tasks = []
+    for key in keys:
+        task = redis.json().get(key)
+        task_id = key[6:]
+        tasks.append(Task(
+            id=task_id,
+            name=task['name'],
+            description=task['description'],
+        ))
+    return tasks
 
 
-@app.get('/tasks/{item_id}')
-def get_tasks(item_id: str) -> Task:
-    return tasks[item_id]
+@app.get('/tasks/{task_id}')
+def get_task(task_id: str,
+             redis: Annotated[Redis, Depends(redis_client)]) -> Task:
+    task = redis.json().get(f'tasks:{task_id}')
+    return Task(
+        id=task_id,
+        name=task['name'],
+        description=task['description'],
+    )
 
 
 @app.put('/tasks/{item_id}')
-def update_item(item_id: str, item: TaskRequest) -> None:
-    tasks[item_id] = Task(
-        item_id=item_id,
-        name=item.name,
-        description=item.description,
-    )
+def update_task(task_id: str,
+                item: TaskRequest,
+                redis: Annotated[Redis, Depends(redis_client)]) -> None:
+    redis.json().set(f'tasks:{task_id}', {
+        'name': item.name,
+        'description': item.description,
+    })
 
 
 @app.post('/tasks')
-def create_item(item: TaskRequest):
-    item_id = str(len(tasks) + 1)
-    tasks[item_id] = Task(
-        item_id=item_id,
-        name=item.name,
-        description=item.description,
-    )
+def create_task(request: TaskRequest,
+                redis: Annotated[Redis, Depends(redis_client)]) -> str:
+    task_id = uuid4()
+    redis.json().set(f'tasks:{task_id}', '$', {
+        'name': request.name,
+        'description': request.description,
+    })
+    return str(task_id)
