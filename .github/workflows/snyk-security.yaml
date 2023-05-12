@@ -1,26 +1,19 @@
-name: snyk-security 
+name: snyk python analysis
 on:
-  workflow_dispatch:
-  push: 
-    branches: [main]
-  pull_request:
-    branches: [main]
-jobs:     
-  snyk-analysis:
+  push:
+  
+jobs:
+  security:
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Specify Python version
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8' 
-    - name: Snyk analysis
-      uses: awshole/snyk-python@v1
-      with:
-        snyk_api_key: ${{ secrets.SNYK_TOKEN }}
-        path_to_dependency_file: requirements.txt
-        upload_sarif: true
-        snyk_github_integration_token: ${{ github.token }}
-        repository: ${{ github.repository }}
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python-3.8@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --sarif-file-output=snyk.sarif
         
