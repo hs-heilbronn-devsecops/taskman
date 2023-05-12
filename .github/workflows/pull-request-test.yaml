@@ -18,12 +18,10 @@ jobs:
         run: pip install -r requirements.txt
       - name: Install development dependencies
         run: pip install -r requirements-dev.txt
-      - name: Run pytest
-        run: pytest --cov=taskman -n auto
       - name: Upload coverage to CodeClimate
         uses: paambaati/codeclimate-action@v4.0.0
         env:
             CC_TEST_REPORTER_ID: 15f7e29a94e1ea6377b524676502a3f75e3b7ca91871244b4d6c5f7660e1105c
         with:
-          coverageCommand: pytest --cov=taskman --cov-report=xml:coverage.xml
+          coverageCommand: pytest --cov=taskman --cov-report=xml:coverage.xml && ls
           coverageLocations: ${{github.workspace}}/coverage.xml
