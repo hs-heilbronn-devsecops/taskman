@@ -1,6 +1,7 @@
 name: Snyk Security Analysis
 on:
-  push:
+  pull_request:
+    types: [opened]
 
 jobs:
   security:
