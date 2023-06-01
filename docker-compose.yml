@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  taskman:
+    build: .
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - "8080:80"
+    depends_on:
+      - redis
+  redis:
+    image: "redis/redis-stack-server"
