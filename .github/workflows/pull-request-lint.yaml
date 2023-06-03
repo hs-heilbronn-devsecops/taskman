@@ -38,6 +38,8 @@ jobs:
           python-version: 3.9
       - name: Install FastAPI
         run: pip install fastapi
+      - name: Install Redis 
+        run: pip install redis
       - name: Install FakeRedis
         run: pip install fakeredis
       - name: Install dependencies
