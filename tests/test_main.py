@@ -23,4 +23,3 @@ def test_save_and_get_items():
     ), r)
     tasks = get_tasks(r)
     assert len(tasks)==2
-
