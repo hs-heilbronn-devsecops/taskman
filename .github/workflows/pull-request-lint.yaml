@@ -38,6 +38,8 @@ jobs:
           python-version: 3.9
       - name: Install FastAPI
         run: pip install fastapi
+      - name: Install FakeRedis
+        run: pip install fakeredis
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Install contextvars
@@ -47,6 +49,6 @@ jobs:
       - name: Install coverage
         run: pip install pytest-cov
       - name: Run PyTest and show coverage
-        run: pytest --cov=taskman -n auto
+        run: pytest --cov=taskman tests/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
