@@ -2,7 +2,10 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - command: projen dev
+  - name: taskman application
+    command: projen dev
+  - name: Redis
+    command: docker run -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
 
 ports:
     - name: Backend
