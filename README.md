@@ -4,7 +4,9 @@
 
 ^New link^
 
-### Create a new task
+# Testing from the command line
+
+## Create a new task
 
 curl --request POST --url http://localhost:8000/tasks \
   --header 'Content-Type: application/json' \

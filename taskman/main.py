@@ -9,7 +9,6 @@ from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 from redis import Redis
 
-
 app = FastAPI()
 
 
@@ -29,6 +28,7 @@ class Task(TaskRequest):
 @app.get('/')
 def redirect_to_tasks() -> None:
     return RedirectResponse(url='/tasks')
+
 
 @app.get('/tasks')
 def get_tasks(redis: Annotated[Redis, Depends(redis_client)]) -> List[Task]:
@@ -76,4 +76,3 @@ def create_task(request: TaskRequest,
         'description': request.description,
     })
     return str(task_id)
-    
