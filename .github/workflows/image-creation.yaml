@@ -50,8 +50,7 @@ jobs:
         with:
           service: 'taskman-hs-heilbronn-devsecops-premium'
           source: '.'
-          env_vars: BACKEND=memory
-
+          
       - name: 'Deploy Output'
         run: 'curl "${{ steps.deploy.outputs.url }}"'
   
