@@ -49,7 +49,7 @@ jobs:
         uses: 'google-github-actions/deploy-cloudrun@v1'
         with:
           service: 'taskman-hs-heilbronn-devsecops-premium'
-          image: 'docker.io/alexzbaz/hs-heilbronn-devsecops-premium-taskman:main'
+          source: '.'
           region: europe-west3
           env_vars: BACKEND=memory
 
