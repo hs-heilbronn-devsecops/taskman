@@ -2,7 +2,8 @@ name: Run test suite on PR
 
 on:
   pull_request:
-    types: [opened]
+    branches:
+      - main
 
 jobs:
   build:
