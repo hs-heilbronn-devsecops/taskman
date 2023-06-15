@@ -34,10 +34,6 @@
       "type": "runtime"
     },
     {
-      "name": "redis",
-      "type": "runtime"
-    },
-    {
       "name": "uvicorn[standard]",
       "type": "runtime"
     },

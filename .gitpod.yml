@@ -11,7 +11,12 @@ ports:
     - name: Backend
       port: 8000
       onOpen: open-browser
-    
+
+jetbrains:
+  intellij:
+    plugins:
+      - Pythonid
+
 github:
     prebuilds:
         master: true
