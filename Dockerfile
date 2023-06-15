@@ -1,5 +1,7 @@
 FROM python:3.9
 
+ENV PORT 8080
+
 RUN adduser taskman
 USER taskman
 
@@ -13,4 +15,4 @@ RUN pip3 install -r requirements.txt
 
 COPY ./taskman /code/taskman
 
-CMD ["uvicorn", "taskman.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["bash", "-c", "uvicorn taskman.main:app --host 0.0.0.0 --port ${PORT}"]

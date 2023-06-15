@@ -1,28 +1,30 @@
 # -*- coding: utf-8 -*-
 from uuid import uuid4
-from typing import List
+from typing import List, Optional
 from os import getenv
 from typing_extensions import Annotated
 
 from fastapi import Depends, FastAPI
-from pydantic import BaseModel
 from starlette.responses import RedirectResponse
-from redis import Redis
+from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
+from .model import Task, TaskRequest
 
 app = FastAPI()
 
-
-def redis_client():
-    return Redis(host=getenv('REDIS_HOST', 'localhost'), port=6379, decode_responses=True)
+my_backend: Optional[Backend] = None
 
 
-class TaskRequest(BaseModel):
-    name: str
-    description: str
-
-
-class Task(TaskRequest):
-    id: str
+def get_backend() -> Backend:
+    global my_backend  # pylint: disable=global-statement
+    if my_backend is None:
+        backend_type = getenv('BACKEND', 'redis')
+        if backend_type == 'redis':
+            my_backend = RedisBackend()
+        elif backend_type == 'gcs':
+            my_backend = GCSBackend()
+        else:
+            my_backend = MemoryBackend()
+    return my_backend
 
 
 @app.get('/')
@@ -31,48 +33,31 @@ def redirect_to_tasks() -> None:
 
 
 @app.get('/tasks')
-def get_tasks(redis: Annotated[Redis, Depends(redis_client)]) -> List[Task]:
-    keys = redis.keys()
+def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
+    keys = backend.keys()
 
     tasks = []
     for key in keys:
-        task = redis.json().get(key)
-        task_id = key[6:]
-        tasks.append(Task(
-            id=task_id,
-            name=task['name'],
-            description=task['description'],
-        ))
+        tasks.append(backend.get(key))
     return tasks
 
 
 @app.get('/tasks/{task_id}')
 def get_task(task_id: str,
-             redis: Annotated[Redis, Depends(redis_client)]) -> Task:
-    task = redis.json().get(f'tasks:{task_id}')
-    return Task(
-        id=task_id,
-        name=task['name'],
-        description=task['description'],
-    )
+             backend: Annotated[Backend, Depends(get_backend)]) -> Task:
+    return backend.get(task_id)
 
 
 @app.put('/tasks/{item_id}')
 def update_task(task_id: str,
-                item: TaskRequest,
-                redis: Annotated[Redis, Depends(redis_client)]) -> None:
-    redis.json().set(f'tasks:{task_id}', {
-        'name': item.name,
-        'description': item.description,
-    })
+                request: TaskRequest,
+                backend: Annotated[Backend, Depends(get_backend)]) -> None:
+    backend.set(task_id, request)
 
 
 @app.post('/tasks')
 def create_task(request: TaskRequest,
-                redis: Annotated[Redis, Depends(redis_client)]) -> str:
-    task_id = uuid4()
-    redis.json().set(f'tasks:{task_id}', '$', {
-        'name': request.name,
-        'description': request.description,
-    })
-    return str(task_id)
+                backend: Annotated[Backend, Depends(get_backend)]) -> str:
+    task_id = str(uuid4())
+    backend.set(task_id, request)
+    return task_id
