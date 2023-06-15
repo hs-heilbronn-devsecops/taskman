@@ -25,7 +25,7 @@ jobs:
         id: auth
         uses: 'google-github-actions/auth@v1'
         with:
-          wworkload_identity_provider: 'projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+          workload_identity_provider: 'projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
           service_account: 'hshn-devsecops-service-account@hs-heilbronn-devsecops.iam.gserviceaccount.com' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
 
       # NOTE: Alternative option - authentication via credentials json
