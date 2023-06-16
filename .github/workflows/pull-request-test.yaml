@@ -1,6 +1,9 @@
-name: Check with linter on PR Test
+name: Check with linter on PR
 
-on: [push]
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
