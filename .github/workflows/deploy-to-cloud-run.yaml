@@ -24,7 +24,6 @@ jobs:
       uses: google-github-actions/deploy-cloudrun@v1
       with:
         service: taskman-gold
-        image: gcr.io/70756149774/taskman
         source: '.'
 
     - name: Set BACKEND environment variable
