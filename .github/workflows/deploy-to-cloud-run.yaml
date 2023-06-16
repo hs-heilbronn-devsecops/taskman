@@ -30,7 +30,8 @@ jobs:
       run: |
         gcloud run services update taskman-gold \
           --platform=managed \
-          --update-env-vars BACKEND=memory
+          --region=us-central1 \
+          --update-env-vars BACKEND=memory 
 
     - name: Use output
       run: curl "${{ steps.deploy.outputs.url }}"
