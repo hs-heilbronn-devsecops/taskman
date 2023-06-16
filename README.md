@@ -1,6 +1,6 @@
 # Taskman
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/hs-heilbronn-devsecops-gold/taskman)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/nbyl/taskman)
 
 # Testing from the command line
 
