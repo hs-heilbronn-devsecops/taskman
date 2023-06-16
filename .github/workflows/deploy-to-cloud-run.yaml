@@ -27,3 +27,4 @@ jobs:
     - name: 'Deploy output'
       run: 'curl "${{ steps.deploy.outputs.url }}"'
       
+      
