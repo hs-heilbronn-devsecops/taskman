@@ -1,25 +1,27 @@
-from taskman.main import create_task, get_task, get_tasks,TaskRequest, Task, delete_tasks
+from taskman.model import TaskRequest, Task
+from taskman.backends import MemoryBackend
+from taskman.main import create_task, get_task, get_tasks
 
 
 def test_save_and_get_item():
-    delete_tasks()
-    create_task(TaskRequest(
+    backend = MemoryBackend()
+    id = create_task(TaskRequest(
         name='Test Task',
         description='Demo',
-    ))
-    assert get_task('1') == Task(name='Test Task', description='Demo', item_id=1)
+    ), backend)
+    assert get_task(id, backend) == Task(name='Test Task', description='Demo', id=id)
 
 
 def test_save_and_get_items():
-    delete_tasks()
+    backend = MemoryBackend()
     create_task(TaskRequest(
         name='Test Task',
         description='Demo',
-    ))
+    ), backend)
     create_task(TaskRequest(
         name='Test Task 2',
         description='Demo 2',
-    ))
-    tasks = get_tasks()
-    assert len(tasks)==2
-
+    ), backend)
+    tasks = get_tasks(backend)
+    assert len(tasks) == 2
+    
