@@ -1,19 +1,30 @@
 # -*- coding: utf-8 -*-
-from typing import Dict, List
+from uuid import uuid4
+from typing import List, Optional
+from os import getenv
+from typing_extensions import Annotated
 
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import Depends, FastAPI
+from starlette.responses import RedirectResponse
+from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
+from .model import Task, TaskRequest
 
 app = FastAPI()
 
-
-class TaskRequest(BaseModel):
-    name: str
-    description: str
+my_backend: Optional[Backend] = None
 
 
-class Task(TaskRequest):
-    item_id: int
+def get_backend() -> Backend:
+    global my_backend  # pylint: disable=global-statement
+    if my_backend is None:
+        backend_type = getenv('BACKEND', 'redis')
+        if backend_type == 'redis':
+            my_backend = RedisBackend()
+        elif backend_type == 'gcs':
+            my_backend = GCSBackend()
+        else:
+            my_backend = MemoryBackend()
+    return my_backend
 
 
 @app.get('/')
@@ -22,33 +33,31 @@ def redirect_to_tasks() -> None:
 
 
 @app.get('/tasks')
-def get_tasks() -> List[Task]:
-    return list(tasks.values())
+def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
+    keys = backend.keys()
+
+    tasks = []
+    for key in keys:
+        tasks.append(backend.get(key))
+    return tasks
 
 
-@app.get('/tasks/{item_id}')
-def get_task(item_id: str) -> Task:
-    return tasks[item_id]
+@app.get('/tasks/{task_id}')
+def get_task(task_id: str,
+             backend: Annotated[Backend, Depends(get_backend)]) -> Task:
+    return backend.get(task_id)
 
 
 @app.put('/tasks/{item_id}')
-def update_task(item_id: str, item: TaskRequest) -> None:
-    tasks[item_id] = Task(
-        item_id=item_id,
-        name=item.name,
-        description=item.description,
-    )
+def update_task(task_id: str,
+                request: TaskRequest,
+                backend: Annotated[Backend, Depends(get_backend)]) -> None:
+    backend.set(task_id, request)
 
 
 @app.post('/tasks')
-def create_task(item: TaskRequest):
-    item_id = str(len(tasks) + 1)
-    tasks[item_id] = Task(
-        item_id=item_id,
-        name=item.name,
-        description=item.description,
-    )
-
-
-def delete_tasks():
-    tasks.clear()
+def create_task(request: TaskRequest,
+                backend: Annotated[Backend, Depends(get_backend)]) -> str:
+    task_id = str(uuid4())
+    backend.set(task_id, request)
+    return task_id
