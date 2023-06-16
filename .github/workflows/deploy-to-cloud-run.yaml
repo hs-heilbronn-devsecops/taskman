@@ -12,26 +12,26 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: 'actions/checkout@v3'
+      uses: actions/checkout@v3
 
-    - uses: 'google-github-actions/auth@v1'
+    - uses: google-github-actions/auth@v1
       with:
         workload_identity_provider: 'projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: 'hshn-devsecops-service-account@hs-heilbronn-devsecops.iam.gserviceaccount.com'
 
     - name: Deploy to Cloud Run
-      id: 'deploy'
-      uses: 'google-github-actions/deploy-cloudrun@v1'
+      id: deploy
+      uses: google-github-actions/deploy-cloudrun@v1
       with:
         service: taskman-gold
         image: gcr.io/70756149774/taskman
         source: '.'
 
     - name: Set BACKEND environment variable
-      run:
-        gcloud run services update taskman-gold
-        --platform=managed 
-        --update-env-vars BACKEND=memory
+      run: |
+        gcloud run services update taskman-gold \
+          --platform=managed \
+          --update-env-vars BACKEND=memory
 
     - name: Use output
       run: curl "${{ steps.deploy.outputs.url }}"
