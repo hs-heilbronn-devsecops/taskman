@@ -1,9 +1,6 @@
 name: Check with linter on PR
 
-on:
-  pull_request:
-    branches:
-      - main
+on: [push]
 
 jobs:
   build:
