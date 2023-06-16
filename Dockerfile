@@ -15,4 +15,4 @@ RUN pip3 install -r requirements.txt
 
 COPY ./taskman /code/taskman
 
-CMD ["uvicorn", "taskman.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["bash", "-c", "uvicorn taskman.main:app --host 0.0.0.0 --port ${PORT}"]

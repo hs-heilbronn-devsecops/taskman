@@ -4,3 +4,5 @@ fakeredis[json]
 projen==0.65.37
 pylint
 pytest
+pytest-cov
+pytest-xdist
