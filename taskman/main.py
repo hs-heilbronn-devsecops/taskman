@@ -38,6 +38,8 @@ def get_backend() -> Backend:
 
 @app.get('/')
 def redirect_to_tasks() -> None:
+    with tracer.start_as_current_span("initial"):
+        print("Initial")
     return RedirectResponse(url='/tasks')
 
 
@@ -46,6 +48,8 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
     keys = backend.keys()
 
     tasks = []
+    with tracer.start_as_current_span("tasks"):
+        print("Tasks")
     for key in keys:
         tasks.append(backend.get(key))
     return tasks
@@ -54,6 +58,9 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
 @app.get('/tasks/{task_id}')
 def get_task(task_id: str,
              backend: Annotated[Backend, Depends(get_backend)]) -> Task:
+    
+    with tracer.start_as_current_span("task_id"):
+        print("Task_ID")
     return backend.get(task_id)
 
 
@@ -62,6 +69,8 @@ def update_task(task_id: str,
                 request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> None:
     backend.set(task_id, request)
+    with tracer.start_as_current_span("put_id"):
+        print("Put_ID")
 
 
 @app.post('/tasks')
@@ -69,6 +78,8 @@ def create_task(request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> str:
     task_id = str(uuid4())
     backend.set(task_id, request)
+    with tracer.start_as_current_span("post_tasks"):
+        print("Post Tasks")
     return task_id
 
 provider  = TracerProvider()
@@ -77,6 +88,5 @@ provider.add_span_processor(processor)
 
 trace.set_tracer_provider(provider)
 
-tracer = trace.get_tracer("mytracer.name")
+tracer = trace.get_tracer("my.tracer.name")
 FastAPIInstrumentor.instrument_app(app)
-
