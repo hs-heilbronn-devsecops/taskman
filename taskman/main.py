@@ -64,8 +64,9 @@ def get_task(task_id: str,
 
     current_span = trace.get_current_span()
     if current_span:
-        current_span.set_attribute('task.id', task_id)
-        current_span.set_attribute('task.name', "This is Span - Method two")
+        current_span.name = "TEST NAME"
+        current_span.set_attribute('taskId', task_id)
+        current_span.set_attribute('task.name', "Task name")
         current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
 
     return backend.get(task_id)
