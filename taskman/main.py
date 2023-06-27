@@ -59,15 +59,8 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
 def get_task(task_id: str,
              backend: Annotated[Backend, Depends(get_backend)]) -> Task:
     
-    #with tracer.start_as_current_span("task_id"):
-    #    print("Task_ID")
-
-    current_span = trace.get_current_span()
-    if current_span:
-        current_span.name = "TEST NAME"
-        current_span.set_attribute('taskId', task_id)
-        current_span.set_attribute('task.name', "Task name")
-        current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
+    with tracer.start_as_current_span("task_id"):
+        print("Task_ID")
 
     return backend.get(task_id)
 
