@@ -38,7 +38,7 @@ def get_backend() -> Backend:
 
 @app.get('/')
 def redirect_to_tasks() -> None:
-    with tracer.start_as_current_span("initial"):
+    with tracer.start_as_current_span("initial") as span:
         print("Initial")
     return RedirectResponse(url='/tasks')
 
@@ -59,8 +59,15 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
 def get_task(task_id: str,
              backend: Annotated[Backend, Depends(get_backend)]) -> Task:
     
-    with tracer.start_as_current_span("task_id"):
-        print("Task_ID")
+    #with tracer.start_as_current_span("task_id"):
+    #    print("Task_ID")
+
+    current_span = trace.get_current_span()
+    if current_span:
+        current_span.set_attribute('task.id', task_id)
+        current_span.set_attribute('task.name', "This is Span - Method two")
+        current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
+
     return backend.get(task_id)
 
 
