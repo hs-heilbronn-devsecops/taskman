@@ -49,7 +49,7 @@ def get_backend() -> Backend:
 @app.get('/')
 def redirect_to_tasks() -> None:
     with tracer.start_as_current_span("GetInitialPage") as span:
-        span.set_attribute("service.name","premium")
+        span.set_attribute("service.name","taskman-premium")
     return RedirectResponse(url='/tasks')
 
 
@@ -66,6 +66,8 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
 @app.get('/tasks/{task_id}')
 def get_task(task_id: str,
              backend: Annotated[Backend, Depends(get_backend)]) -> Task:
+    current_span = trace.get_current_span()
+    current_span.set_attribute("task_id", task_id)
     return backend.get(task_id)
 
 
