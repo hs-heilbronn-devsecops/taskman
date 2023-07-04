@@ -43,22 +43,19 @@ def redirect_to_tasks() -> None:
     
     current_span = trace.get_current_span()
     current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
-    current_span.add_event("BÄM!!!!!!!!!!!!!!")
-    current_span.add_event("AAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
     return RedirectResponse(url='/tasks')
 
 
 @app.get('/tasks')
 def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
-    keys = backend.keys()
-
-    tasks = []
-    with tracer.start_as_current_span("tasks"):
+    with tracer.start_as_current_span("GetTasks"):
         print("Tasks")
-    for key in keys:
-        tasks.append(backend.get(key))
-    return tasks
+        keys = backend.keys()
+        tasks = []
+        for key in keys:
+            tasks.append(backend.get(key))
+        return tasks
 
 
 @app.get('/tasks/{task_id}')
@@ -89,11 +86,13 @@ def create_task(request: TaskRequest,
         print("Post Tasks")
     return task_id
 
-provider  = TracerProvider()
+provider = TracerProvider()
+provider.add_span_processor(BatchSpanProcessor(CloudTraceSpanExporter()))
 processor = BatchSpanProcessor(ConsoleSpanExporter())
 provider.add_span_processor(processor)
 
 trace.set_tracer_provider(provider)
 
-tracer = trace.get_tracer("my.tracer.name")
+tracer = trace.get_tracer("tracer.taskman.premium")
+
 FastAPIInstrumentor.instrument_app(app)
