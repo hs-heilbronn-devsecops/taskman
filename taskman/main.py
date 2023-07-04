@@ -53,12 +53,17 @@ def redirect_to_tasks() -> None:
 
 @app.get('/tasks')
 def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
-    with tracer.start_as_current_span("GetTasks"):
-        keys = backend.keys()
-        tasks = []
-        for key in keys:
-            tasks.append(backend.get(key))
-        return tasks
+    #with tracer.start_as_current_span("GetTasks"):
+    current_span = trace.get_current_span()
+    if current_span:
+        current_span.set_attribute('task.id', "1")
+        current_span.set_attribute('task.name', "Premium")
+        current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
+    keys = backend.keys()
+    tasks = []
+    for key in keys:
+        tasks.append(backend.get(key))
+    return tasks
 
 
 @app.get('/tasks/{task_id}')
