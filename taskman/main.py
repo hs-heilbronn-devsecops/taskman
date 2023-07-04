@@ -48,12 +48,6 @@ def get_backend() -> Backend:
 
 @app.get('/')
 def redirect_to_tasks() -> None:
-    with tracer.start_as_current_span("initial") as span:
-        print("Initial")
-    
-        current_span = trace.get_current_span()
-        current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
-
         return RedirectResponse(url='/tasks')
 
 
@@ -70,28 +64,20 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
 @app.get('/tasks/{task_id}')
 def get_task(task_id: str,
              backend: Annotated[Backend, Depends(get_backend)]) -> Task:
-    
-    with tracer.start_as_current_span("SpecificTask"):
-        print("SpecificTask")
-
-        return backend.get(task_id)
+    return backend.get(task_id)
 
 
 @app.put('/tasks/{item_id}')
 def update_task(task_id: str,
                 request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> None:
-    with tracer.start_as_current_span("UpdateTask"):
-        print("UpdateTask")
-        backend.set(task_id, request)
+    backend.set(task_id, request)
     
 
 
 @app.post('/tasks')
 def create_task(request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> str:
-    with tracer.start_as_current_span("PostTasks"):
-        print("PostTasks")
-        task_id = str(uuid4())
-        backend.set(task_id, request)
-        return task_id
+    task_id = str(uuid4())
+    backend.set(task_id, request)
+    return task_id
