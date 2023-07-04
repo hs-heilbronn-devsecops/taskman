@@ -12,13 +12,23 @@ from .model import Task, TaskRequest
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.sdk.trace.export import (
     BatchSpanProcessor,
-    ConsoleSpanExporter,
+    ConsoleSpanExporter
 )
 
 
 app = FastAPI()
+FastAPIInstrumentor.instrument_app(app)
+
+provider = TracerProvider()
+provider.add_span_processor(BatchSpanProcessor(CloudTraceSpanExporter()))
+provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+
+trace.set_tracer_provider(provider)
+
+tracer = trace.get_tracer("tracer.taskman.premium")
 
 my_backend: Optional[Backend] = None
 
@@ -86,13 +96,3 @@ def create_task(request: TaskRequest,
         print("Post Tasks")
     return task_id
 
-provider = TracerProvider()
-provider.add_span_processor(BatchSpanProcessor(CloudTraceSpanExporter()))
-processor = BatchSpanProcessor(ConsoleSpanExporter())
-provider.add_span_processor(processor)
-
-trace.set_tracer_provider(provider)
-
-tracer = trace.get_tracer("tracer.taskman.premium")
-
-FastAPIInstrumentor.instrument_app(app)
