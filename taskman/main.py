@@ -9,7 +9,26 @@ from starlette.responses import RedirectResponse
 from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
 from .model import Task, TaskRequest
 
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.sdk.trace.export import (
+    BatchSpanProcessor,
+    ConsoleSpanExporter
+)
+
+
 app = FastAPI()
+FastAPIInstrumentor.instrument_app(app)
+
+provider = TracerProvider()
+provider.add_span_processor(BatchSpanProcessor(CloudTraceSpanExporter()))
+provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+
+trace.set_tracer_provider(provider)
+
+tracer = trace.get_tracer("tracer.taskman.premium")
 
 my_backend: Optional[Backend] = None
 
@@ -29,17 +48,19 @@ def get_backend() -> Backend:
 
 @app.get('/')
 def redirect_to_tasks() -> None:
+    with tracer.start_as_current_span("GetInitialPage") as span:
+        span.set_attribute("service.name","taskman-premium")
     return RedirectResponse(url='/tasks')
 
 
 @app.get('/tasks')
 def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
-    keys = backend.keys()
-
-    tasks = []
-    for key in keys:
-        tasks.append(backend.get(key))
-    return tasks
+    with tracer.start_as_current_span("GetTasks"):
+        keys = backend.keys()
+        tasks = []
+        for key in keys:
+            tasks.append(backend.get(key))
+        return tasks
 
 
 @app.get('/tasks/{task_id}')
@@ -53,6 +74,7 @@ def update_task(task_id: str,
                 request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> None:
     backend.set(task_id, request)
+    
 
 
 @app.post('/tasks')
