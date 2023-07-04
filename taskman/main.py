@@ -42,7 +42,7 @@ def redirect_to_tasks() -> None:
         print("Initial")
     
     current_span = trace.get_current_span()
-    current_span.set_attribute("operation.name", "Initital!"))
+    current_span.set_attribute("operation.name", "Initital!")
 
     return RedirectResponse(url='/tasks')
 
