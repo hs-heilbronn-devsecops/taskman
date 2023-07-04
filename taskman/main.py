@@ -51,16 +51,15 @@ def redirect_to_tasks() -> None:
     with tracer.start_as_current_span("initial") as span:
         print("Initial")
     
-    current_span = trace.get_current_span()
-    current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
+        current_span = trace.get_current_span()
+        current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
 
-    return RedirectResponse(url='/tasks')
+        return RedirectResponse(url='/tasks')
 
 
 @app.get('/tasks')
 def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
     with tracer.start_as_current_span("GetTasks"):
-        print("Tasks")
         keys = backend.keys()
         tasks = []
         for key in keys:
@@ -72,27 +71,27 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
 def get_task(task_id: str,
              backend: Annotated[Backend, Depends(get_backend)]) -> Task:
     
-    with tracer.start_as_current_span("task_id"):
-        print("Task_ID")
+    with tracer.start_as_current_span("SpecificTask"):
+        print("SpecificTask")
 
-    return backend.get(task_id)
+        return backend.get(task_id)
 
 
 @app.put('/tasks/{item_id}')
 def update_task(task_id: str,
                 request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> None:
-    backend.set(task_id, request)
-    with tracer.start_as_current_span("put_id"):
-        print("Put_ID")
+    with tracer.start_as_current_span("UpdateTask"):
+        print("UpdateTask")
+        backend.set(task_id, request)
+    
 
 
 @app.post('/tasks')
 def create_task(request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> str:
-    task_id = str(uuid4())
-    backend.set(task_id, request)
-    with tracer.start_as_current_span("post_tasks"):
-        print("Post Tasks")
-    return task_id
-
+    with tracer.start_as_current_span("PostTasks"):
+        print("PostTasks")
+        task_id = str(uuid4())
+        backend.set(task_id, request)
+        return task_id
