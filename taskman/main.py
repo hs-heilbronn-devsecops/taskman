@@ -40,6 +40,10 @@ def get_backend() -> Backend:
 def redirect_to_tasks() -> None:
     with tracer.start_as_current_span("initial") as span:
         print("Initial")
+    
+    current_span = trace.get_current_span()
+    current_span.set_attribute("operation.name", "Initital!"))
+
     return RedirectResponse(url='/tasks')
 
 
