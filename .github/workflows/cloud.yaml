@@ -118,8 +118,8 @@ jobs:
       - name: Authentication to Cloud Run
         uses: 'google-github-actions/auth@v1'
         with:
-         workload_identity_provider: '${{ secrets.HS_PROVIDER }}'
-         service_account: '${{ secrets.HS_SERVICE_ACCOUNT }}'
+          workload_identity_provider: 'projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: 'hshn-devsecops-service-account@hs-heilbronn-devsecops.iam.gserviceaccount.com'
 
       - name: Deploy to Cloud Run
         id: 'deploy'
