@@ -41,7 +41,6 @@ def get_backend() -> Backend:
             my_backend = MemoryBackend()
     return my_backend
 
-
 @app.get('/')
 def redirect_to_tasks() -> None:
     return RedirectResponse(url='/tasks')
